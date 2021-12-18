@@ -13,6 +13,9 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
+  server: {
+    port: 4000,
+  },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
@@ -33,7 +36,29 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
+    // https://www.npmjs.com/package/@nuxtjs/apollo
+    '@nuxtjs/apollo',
   ],
+  apollo: {
+    tokenName: "apollo-token", // specify token name
+    cookieAttributes: {
+     expires: 7 // optional, default: 7 (days)
+    },
+    authenticationType: 'Bearer',
+    defaultOptions: {
+      $query: {
+        fetchPolicy: "network-only",
+        errorPolicy: "all"
+      }
+    },
+    watchLoading: "@/plugins/loadingHandler.js",
+    errorHandler: "@/plugins/errorHandler.js",
+    clientConfigs: {
+      default: {
+        httpEndpoint: 'http://localhost:3000/graphql',
+      }
+    }
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
