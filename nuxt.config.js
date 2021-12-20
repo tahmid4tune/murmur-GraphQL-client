@@ -36,7 +36,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
-    // https://www.npmjs.com/package/@nuxtjs/apollo
+    // https://www.npmjs.com/package/@nuxtjs/apollo/v/4.0.1-rc.5
     '@nuxtjs/apollo',
   ],
   apollo: {
