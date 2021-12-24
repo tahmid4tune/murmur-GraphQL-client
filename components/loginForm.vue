@@ -22,20 +22,18 @@
     </div>
     <b-button type="submit" variant="primary"> Submit </b-button>
     <b-button type="reset" variant="danger">Reset</b-button>
-    <div v-if="loading" class="float-right">
-      <b-spinner variant="primary" small type="grow"></b-spinner>
-      <b-spinner variant="primary" small type="grow"></b-spinner>
-      <b-spinner variant="primary" small type="grow"></b-spinner>
-    </div>
+    <loading-grow :loading="loading" />
   </b-form>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import loadingGrow from './loadingGrow.vue'
 const login = require('~/apollo/mutations/login.gql')
 
 export default Vue.extend({
   name: 'LoginPage',
+  components: { loadingGrow },
   data() {
     return {
       form: {

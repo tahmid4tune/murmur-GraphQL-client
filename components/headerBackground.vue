@@ -10,6 +10,5 @@
   background-image: url('~static/cloud_bg.png');
   height: 16rem;
   background-repeat: no-repeat;
-  font-family: Roboto;
 }
 </style>
