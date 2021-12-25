@@ -1,0 +1,13 @@
+query posts($paginationInput: PaginationInput!) {
+	posts(paginationInput: $paginationInput) {
+		total
+		posts {
+			id
+			text
+			author {
+				id
+				name
+			}
+		}
+	}
+}

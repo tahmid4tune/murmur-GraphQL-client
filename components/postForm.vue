@@ -23,6 +23,7 @@
 import Vue from 'vue'
 import loadingGrow from './loadingGrow.vue'
 const createPost = require('~/apollo/mutations/post.gql')
+
 export default Vue.extend({
   components: { loadingGrow },
   data() {
