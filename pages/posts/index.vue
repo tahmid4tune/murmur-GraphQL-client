@@ -1,20 +1,33 @@
 <template>
-  <b-row>
-    <b-col md="1" sm="0"></b-col>
-    <b-col md="10" sm="12">
-      <b-row>
-        <b-col>
-          <post-form />
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col v-for="post in posts" :key="post.id" md="6" sm="12">
-          <post-display :post="post" />
-        </b-col>
-      </b-row>
-    </b-col>
-    <b-col md="1" sm="0"></b-col>
-  </b-row>
+  <div>
+    <b-row>
+      <b-col md="1" sm="0"></b-col>
+      <b-col md="10" sm="12">
+        <b-row>
+          <b-col>
+            <post-form />
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col v-for="post in posts" :key="post.id" md="6" sm="12">
+            <post-display :post="post" />
+          </b-col>
+        </b-row>
+      </b-col>
+      <b-col md="1" sm="0"></b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="total"
+          :per-page="perPage"
+          align="center"
+          @input="getPosts"
+        ></b-pagination>
+      </b-col>
+    </b-row>
+  </div>
 </template>
 
 <script lang="ts">
@@ -29,13 +42,20 @@ export default Vue.extend({
   layout: 'defaultLayout',
   data() {
     return {
-      currentPage: 1,
       perPage: 10,
     }
   },
   computed: {
     total(): number {
       return this.$store.getters['posts/getTotal']
+    },
+    currentPage: {
+      get(): number {
+        return this.$store.getters['posts/getCurrentPage']
+      },
+      set(value: number) {
+        this.$store.commit('posts/SET_CURRENT_PAGE', value)
+      },
     },
     posts(): Post[] {
       return this.$store.getters['posts/getPaginatedPosts']

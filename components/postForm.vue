@@ -22,7 +22,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import loadingGrow from './loadingGrow.vue'
-const createPost = require('~/apollo/mutations/post.gql')
 
 export default Vue.extend({
   components: { loadingGrow },
@@ -36,20 +35,9 @@ export default Vue.extend({
     async onSubmit(event: any) {
       this.loading = true
       event.preventDefault()
-      try {
-        const { data } = await (this as any).$apollo.mutate({
-          mutation: createPost,
-          variables: {
-            createPostInput: {
-              text: this.postText,
-            },
-          },
-        })
-        console.log(data)
-      } catch (e) {
-      } finally {
-        this.reset()
-      }
+      await this.$store.dispatch('posts/createPost', this.postText)
+      this.reset()
+      await this.$store.dispatch('posts/getPostsForUser')
     },
     reset() {
       this.postText = ''
