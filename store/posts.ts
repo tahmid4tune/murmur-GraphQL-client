@@ -2,10 +2,13 @@ import { ActionTree, GetterTree, MutationTree } from "vuex/types";
 import { namespace } from "vuex-class";
 import { Post, PostState, } from "./types";
 const posts = require('~/apollo/queries/post.gql')
-const createPost = require('~/apollo/mutations/post.gql')
+const createPost = require('~/apollo/mutations/createPost.gql')
+const updatePost = require('~/apollo/mutations/updatePost.gql')
+const removePost = require('~/apollo/mutations/removePost.gql')
 
 export const state = (): PostState => ({
     postList: [],
+    editModePosts: [],
     total: 0,
     currentPage: 1,
     perPage: 10,
@@ -17,6 +20,7 @@ export const getters: GetterTree<PostState, PostState> = {
     getCurrentPage: (state: PostState): number => state.currentPage,
     getTotal: (state: PostState): number => state.total,
     getPerPage: (state: PostState): number => state.perPage,
+    getPostsInEditMode: (state: PostState): number[] => state.editModePosts
 }
 
 export const actions: ActionTree<PostState, PostState> = {
@@ -54,13 +58,42 @@ export const actions: ActionTree<PostState, PostState> = {
         } catch (error) {
             console.error(error)
         }
+    },
+
+    async updatePost({ commit }, payload) {
+        const apollo = this.app.apolloProvider.defaultClient;
+        try {
+            const { data } = await apollo.mutate({
+                mutation: updatePost,
+                variables: {
+                    updatePostInput: {
+                        id: payload.id,
+                        text: payload.text,
+                    },
+                },
+            })
+            commit("SET_UPDATED_TEXT_ON_POST", { id: data.updatePost.id, text: data.updatePost.text });
+        } catch (error) {
+            console.error(error)
+        }
+    },
+
+    async deletePost({ }, payload) {
+        const apollo = this.app.apolloProvider.defaultClient;
+        try {
+            await apollo.mutate({
+                mutation: removePost,
+                variables: {
+                    id: payload,
+                },
+            })
+        } catch (error) {
+            console.error(error)
+        }
     }
 }
 
 export const mutations: MutationTree<PostState> = {
-    SET_FILTER(_state: PostState, _data) {
-        // state.filter = data;
-    },
     SET_TOTAL(state: PostState, data) {
         state.total = data;
     },
@@ -68,8 +101,20 @@ export const mutations: MutationTree<PostState> = {
         state.postList = data;
     },
     SET_CURRENT_PAGE(state: PostState, data) {
-        console.log('page number:', data)
         state.currentPage = data;
+    },
+    SET_POST_IN_EDIT_MODE(state: PostState, data) {
+        state.editModePosts.push(data);
+    },
+    SET_POST_IN_READ_MODE(state: PostState, data) {
+        const index = state.editModePosts.indexOf(data);
+        if (index > -1) {
+            state.editModePosts.splice(index, 1);
+        }
+    },
+    SET_UPDATED_TEXT_ON_POST(state: PostState, data) {
+        const updatedPost: Post = state.postList.filter((post) => post.id === data.id)[0];
+        updatedPost.text = data.text;
     }
 }
 

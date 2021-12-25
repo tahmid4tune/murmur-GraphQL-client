@@ -1,7 +1,9 @@
 mutation createPost($createPostInput: CreatePostInput!) {
 	createPost(createPostInput: $createPostInput) {
 		id
-		authorId
+		author {
+			id
+		}
 		text
 	}
 }

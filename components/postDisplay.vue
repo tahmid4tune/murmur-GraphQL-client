@@ -3,15 +3,31 @@
     <b-card-title>
       <b-avatar class="mr-1" variant="primary"></b-avatar>
       <span>{{ post.author.name }}</span>
-      <post-options />
+      <post-options v-if="permittedToEdit(post)" :post-id="post.id" />
     </b-card-title>
-    <b-card-text class="ml-5">{{ post.text }}</b-card-text>
+    <div v-if="isPostInEditMode">
+      <post-edit :post="post" />
+    </div>
+    <b-card-text v-else class="ml-5">{{ post.text }}</b-card-text>
   </b-card>
 </template>
 <script lang="ts">
 import Vue from 'vue'
+import PermissionMixin from '../plugins/PermissionMixin'
+import postEdit from './postEdit.vue'
 
 export default Vue.extend({
+  components: { postEdit },
+  mixins: [PermissionMixin],
   props: ['post'],
+  computed: {
+    isPostInEditMode(): boolean {
+      const editModePostList: number[] =
+        this.$store.getters['posts/getPostsInEditMode']
+      return !!editModePostList.filter(
+        (editPostId) => editPostId === this.post.id
+      )?.length
+    },
+  },
 })
 </script>

@@ -18,4 +18,5 @@ interface PaginationOptions {
 
 export interface PostState extends PaginationOptions {
   postList: Post[];
+  editModePosts: number[];
 }

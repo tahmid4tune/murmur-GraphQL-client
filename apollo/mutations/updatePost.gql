@@ -1,0 +1,6 @@
+mutation updatePost($updatePostInput: UpdatePostInput!) {
+	updatePost(updatePostInput: $updatePostInput) {
+		id
+		text
+	}
+}
