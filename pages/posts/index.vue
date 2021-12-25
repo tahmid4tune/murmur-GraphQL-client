@@ -8,9 +8,8 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col v-for="(post, index) in posts" :key="post.id" md="6" sm="12">
-          {{ index }} {{ post.author.name }} {{ post.text }}
-          <post-display />
+        <b-col v-for="post in posts" :key="post.id" md="6" sm="12">
+          <post-display :post="post" />
         </b-col>
       </b-row>
     </b-col>
