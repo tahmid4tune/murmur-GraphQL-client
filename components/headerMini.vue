@@ -1,5 +1,7 @@
 <template>
-  <div class="background-cloud-mini pl-5 mt-2"></div>
+  <div class="background-cloud-mini pl-5 mt-2">
+    <log-out />
+  </div>
 </template>
 <style scoped>
 .background-cloud-mini {
