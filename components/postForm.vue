@@ -4,7 +4,7 @@
       <b-form-textarea
         id="post-input"
         v-model="postText"
-        placeholder="What's in your mind?"
+        placeholder="What's on your mind?"
         rows="3"
       ></b-form-textarea>
       <loading-grow :float-right="false" />

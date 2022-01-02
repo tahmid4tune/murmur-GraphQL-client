@@ -1,0 +1,14 @@
+query postsByUser($id: Int!, $paginationInput: PaginationInput!) {
+	postsByUser(id: $id, paginationInput: $paginationInput) {
+		total
+		posts {
+			id
+			text
+			author {
+				id
+				name
+			}
+			createdAt
+		}
+	}
+}

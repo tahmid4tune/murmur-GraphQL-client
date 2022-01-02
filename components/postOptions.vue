@@ -45,7 +45,14 @@ export default Vue.extend({
     },
     async handleDelete() {
       await this.$store.dispatch('posts/deletePost', this.postId)
-      await this.$store.dispatch('posts/getPostsForUser')
+      if (this.$route?.params?.id) {
+        await this.$store.dispatch(
+          'users/getPostsByUser',
+          this?.$route?.params?.id
+        )
+      } else {
+        await this.$store.dispatch('posts/getPostsForUser')
+      }
     },
   },
 })

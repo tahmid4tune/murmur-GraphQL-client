@@ -12,7 +12,7 @@
       <post-edit :post="post" />
     </div>
     <b-card-text v-else class="ml-5">{{ post.text }}</b-card-text>
-    <b-card-text class="ml-5 text-secondary">{{
+    <b-card-text class="ml-5 text-secondary float-right">{{
       getFormattedDateText(post.createdAt)
     }}</b-card-text>
   </b-card>

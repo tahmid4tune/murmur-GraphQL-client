@@ -3,7 +3,7 @@
     <b-form-textarea
       id="post-update"
       v-model="postText"
-      placeholder="What's in your mind?"
+      placeholder="What's on your mind?"
       rows="3"
     ></b-form-textarea>
     <loading-grow :float-right="false" />
@@ -37,7 +37,10 @@ export default Vue.extend({
   methods: {
     async onSubmit(event: any) {
       event.preventDefault()
-      await this.$store.dispatch('posts/updatePost', {
+      const action = this.$route?.params?.id
+        ? 'users/updatePost'
+        : 'posts/updatePost'
+      await this.$store.dispatch(action, {
         id: this.post.id,
         text: this.postText,
       })
