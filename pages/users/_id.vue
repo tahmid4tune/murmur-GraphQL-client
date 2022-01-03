@@ -8,6 +8,11 @@
             <post-form />
           </b-col>
         </b-row>
+        <b-row>
+          <b-col>
+            <follow-stats />
+          </b-col>
+        </b-row>
       </b-col>
       <b-col md="5" sm="12">
         <b-row v-for="post in posts" :key="post.id">
@@ -33,11 +38,12 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
+import FollowStats from '../../components/followStats.vue'
 import postForm from '../../components/postForm.vue'
 import LoggedUserMixin from '../../plugins/LoggedUserMixin'
 export default Vue.extend({
   name: 'UserPage',
-  components: { postForm },
+  components: { postForm, FollowStats },
   mixins: [LoggedUserMixin],
   layout: 'defaultLayout',
   data() {

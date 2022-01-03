@@ -1,0 +1,6 @@
+query followStat($id: Int!) {
+	followStat(id: $id) {
+		follows
+		followedBy
+	}
+}
