@@ -1,0 +1,6 @@
+query followingUserList($paginationInput: PaginationInput!) {
+	followingUserList(paginationInput: $paginationInput) {
+		id
+		name
+	}
+}

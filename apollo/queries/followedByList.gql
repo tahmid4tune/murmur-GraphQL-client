@@ -1,0 +1,7 @@
+query followedByUserList($paginationInput: PaginationInput!) {
+	followedByUserList(paginationInput: $paginationInput) {
+		id
+		name
+		isFollowing
+	}
+}

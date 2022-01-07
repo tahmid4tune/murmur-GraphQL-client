@@ -2,7 +2,11 @@
   <b-card class="my-2">
     <b-card-title>
       <b-avatar class="mr-1" variant="primary"></b-avatar>
-      <span>{{ post.author.name }}</span>
+      <span>
+        <NuxtLink :to="`/users/${post.author.id}`">
+          {{ post.author.name }}
+        </NuxtLink>
+      </span>
       <post-options
         v-if="getLoggedUserId() === post.author.id"
         :post-id="post.id"
