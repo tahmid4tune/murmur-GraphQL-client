@@ -26,10 +26,10 @@
         </b-col>
         <b-col md="3">
           <b-button
-            v-if="getLoggedUserId() === $route.params.id"
-            type="submit"
+            v-if="getLoggedUserId() == $route.params.id"
             variant="primary"
             class="float-right"
+            @click.prevent="doUnfollow(user.id)"
           >
             Unfollow
           </b-button>
@@ -74,6 +74,14 @@ export default Vue.extend({
   methods: {
     async getFollowsUserList() {
       await this.$store.dispatch('follows/getFollowsUserList')
+    },
+    async doUnfollow(unFollowId: string) {
+      await this.$store.dispatch('follows/unfollowUser', unFollowId)
+      await this.$store.dispatch(
+        'follows/getFollowStatCounts',
+        this.$route.params?.id
+      )
+      await this.getFollowsUserList()
     },
   },
 })

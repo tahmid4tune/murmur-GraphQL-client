@@ -1,10 +1,10 @@
 <template>
   <div>
     <b-row>
-      <b-col>
+      <b-col md="6" sm="12">
         <follows-user-list />
       </b-col>
-      <b-col>
+      <b-col md="6" sm="12">
         <followed-by-list />
       </b-col>
     </b-row>

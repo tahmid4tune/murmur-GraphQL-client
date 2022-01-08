@@ -27,15 +27,22 @@ export interface User {
   name: string;
 }
 
+export interface UserWithFollowRecord extends User {
+  isFollowing: boolean;
+}
+
 export interface UserState {
   followingUserList: User[];
   followedByUserList: User[];
   currentPostPage: number;
+  currentUsersPage: number;
   totalPostsByUser: number;
   currentFollowedByUserPage: number;
   currentFollowingUserPage: number;
   perPage: number;
   postList: Post[];
+  userList: UserWithFollowRecord[];
+  totalUsers: number;
 }
 
 

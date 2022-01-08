@@ -23,6 +23,7 @@
         <b-row>
           <b-col>
             <b-pagination
+              v-if="totalPostsByUser"
               v-model="currentPostPage"
               :total-rows="totalPostsByUser"
               :per-page="perPage"

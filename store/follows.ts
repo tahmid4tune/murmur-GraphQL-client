@@ -4,6 +4,8 @@ import { FollowState, User } from "./types";
 
 const followStats = require('~/apollo/queries/followStats.gql')
 const followingUserList = require('~/apollo/queries/followingList.gql')
+const unfollowUser = require('~/apollo/mutations/unFollow.gql')
+const followUser = require('~/apollo/mutations/follow.gql')
 
 export const state = (): FollowState => ({
     followedByCount: 0,
@@ -24,22 +26,23 @@ export const getters: GetterTree<FollowState, FollowState> = {
 }
 
 export const actions: ActionTree<FollowState, FollowState> = {
-    async getFollowStatCounts({commit},payload) {
+    async getFollowStatCounts({ commit }, payload) {
         const apollo = this.app.apolloProvider.defaultClient;
         try {
             const { data } = await apollo.query({
-            query: followStats,
-            variables: {
+                query: followStats,
+                variables: {
                     id: parseInt(payload),
                 },
+                fetchPolicy: 'network-only',
             })
-            commit("SET_FOLLOWS_COUNT",data?.followStat?.follows || 0);
-            commit("SET_FOLLOWED_BY_COUNT",data?.followStat?.followedBy || 0);
+            commit("SET_FOLLOWS_COUNT", data?.followStat?.follows || 0);
+            commit("SET_FOLLOWED_BY_COUNT", data?.followStat?.followedBy || 0);
         } catch (error) {
             console.log(error);
         }
     },
-    async getFollowsUserList({commit, state}) {
+    async getFollowsUserList({ commit, state }) {
         const apollo = this.app.apolloProvider.defaultClient;
         try {
             const { data } = await apollo.query({
@@ -49,11 +52,40 @@ export const actions: ActionTree<FollowState, FollowState> = {
                         page: state.currentFollowsPage,
                         perPage: state.perPage,
                     },
-                    },
-                })
-            commit("SET_FOLLOWING_USER_LIST",data?.followingUserList)
+                },
+                fetchPolicy: 'network-only',
+            })
+            commit("SET_FOLLOWING_USER_LIST", data?.followingUserList)
         } catch (error) {
-            
+            console.log(error)
+        }
+    },
+    async unfollowUser({ commit }, payload) {
+        const apollo = this.app.apolloProvider.defaultClient;
+        try {
+            await apollo.mutate({
+                mutation: unfollowUser,
+                variables: {
+                    id: parseInt(payload)
+                }
+            })
+            commit('users/UPDATE_FOLLOW_STATE', true, { root: true });
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async followUser({ commit }, payload) {
+        const apollo = this.app.apolloProvider.defaultClient;
+        try {
+            await apollo.mutate({
+                mutation: followUser,
+                variables: {
+                    id: parseInt(payload)
+                }
+            })
+            commit('users/UPDATE_FOLLOW_STATE', true, { root: true });
+        } catch (error) {
+            console.log(error)
         }
     }
 }

@@ -1,0 +1,10 @@
+query users($paginationInput: PaginationInput!, $name: String!) {
+	users(paginationInput: $paginationInput, name: $name) {
+		users {
+			id
+			name
+			isFollowing
+		}
+		total
+	}
+}
