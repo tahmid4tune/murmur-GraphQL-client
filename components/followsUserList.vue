@@ -11,6 +11,7 @@
       <b-row>
         <b-col>
           <b-pagination
+            v-if="followingCount"
             v-model="currentFollowsPage"
             :total-rows="followingCount"
             :per-page="perPage"
@@ -24,7 +25,12 @@
           <user-avatar :id="user.id" class="float-left" :name="user.name" />
         </b-col>
         <b-col md="3">
-          <b-button type="submit" variant="primary" class="float-right">
+          <b-button
+            v-if="getLoggedUserId() === $route.params.id"
+            type="submit"
+            variant="primary"
+            class="float-right"
+          >
             Unfollow
           </b-button>
         </b-col>
@@ -34,14 +40,14 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
+import LoggedUserMixin from '../plugins/LoggedUserMixin'
 import { User } from '../store/types'
 import userAvatar from './userAvatar.vue'
 export default Vue.extend({
   components: { userAvatar },
+  mixins: [LoggedUserMixin],
   data() {
-    return {
-      perPage: 10,
-    }
+    return {}
   },
   computed: {
     followingCount() {
@@ -57,6 +63,9 @@ export default Vue.extend({
     },
     followingUserList(): User[] {
       return this.$store.getters['follows/getFollowingUserList']
+    },
+    perPage() {
+      return this.$store.getters['follows/getPerPage']
     },
   },
   async created() {

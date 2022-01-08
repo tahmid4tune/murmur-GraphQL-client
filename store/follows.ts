@@ -20,6 +20,7 @@ export const getters: GetterTree<FollowState, FollowState> = {
     getCurrentFollowsPage: (state: FollowState): number => state.currentFollowsPage,
     getCurrentFollowedByPage: (state: FollowState): number => state.currentFollowedByPage,
     getFollowingUserList: (state: FollowState): User[] => state.followingUserList,
+    getPerPage: (state: FollowState): number => state.perPage,
 }
 
 export const actions: ActionTree<FollowState, FollowState> = {
