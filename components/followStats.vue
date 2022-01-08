@@ -1,38 +1,29 @@
 <template>
   <div>
-    <b-card
-      border-variant="primary"
-      header="Following Stats"
-      header-bg-variant="primary"
-      header-text-variant="white"
-      align="center"
-    >
-      <b-row> Follows: {{ following }}</b-row>
-      <b-row> Followed By: {{ followedBy }}</b-row>
-    </b-card>
+    <b-row>
+      <b-col>
+        <follows-user-list />
+      </b-col>
+      <b-col>
+        <followed-by-list />
+      </b-col>
+    </b-row>
   </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
-const followStats = require('~/apollo/queries/followStats.gql')
+import FollowedByList from './followedByList.vue'
+import followsUserList from './followsUserList.vue'
 export default Vue.extend({
+  components: { followsUserList, FollowedByList },
   data() {
-    return {
-      followedBy: 0,
-      following: 0,
-    }
+    return {}
   },
   async created() {
-    try {
-      const { data } = await (this as any).$apollo.query({
-        query: followStats,
-        variables: {
-          id: parseInt(this.$route?.params?.id),
-        },
-      })
-      this.followedBy = data?.followStat?.followedBy || 0
-      this.following = data?.followStat?.follows || 0
-    } catch (error) {}
+    await this.$store.dispatch(
+      'follows/getFollowStatCounts',
+      this.$route.params?.id
+    )
   },
 })
 </script>

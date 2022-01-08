@@ -37,3 +37,13 @@ export interface UserState {
   perPage: number;
   postList: Post[];
 }
+
+
+export interface FollowState {
+  followedByCount: number;
+  followingCount: number;
+  currentFollowsPage: number;
+  currentFollowedByPage: number;
+  perPage: number;
+  followingUserList: User[];
+}

@@ -1,12 +1,7 @@
 <template>
   <b-card class="my-2">
     <b-card-title>
-      <b-avatar class="mr-1" variant="primary"></b-avatar>
-      <span>
-        <NuxtLink :to="`/users/${post.author.id}`">
-          {{ post.author.name }}
-        </NuxtLink>
-      </span>
+      <user-avatar :id="post.author.id" :name="post.author.name" />
       <post-options
         v-if="getLoggedUserId() === post.author.id"
         :post-id="post.id"
@@ -25,10 +20,11 @@
 import Vue from 'vue'
 import LoggedUserMixin from '../plugins/LoggedUserMixin'
 import DateHelperMixin from '../plugins/DateHelperMixin'
-import postEdit from './postEdit.vue'
+import postEdit from '~/components/postEdit.vue'
+import userAvatar from '~/components/userAvatar.vue'
 
 export default Vue.extend({
-  components: { postEdit },
+  components: { postEdit, userAvatar },
   mixins: [LoggedUserMixin, DateHelperMixin],
   props: ['post'],
   computed: {
