@@ -9,6 +9,12 @@ query posts($paginationInput: PaginationInput!) {
 				name
 			}
 			createdAt
+			likes {
+				id
+				likedBy {
+					name
+				}
+			}
 		}
 	}
 }
