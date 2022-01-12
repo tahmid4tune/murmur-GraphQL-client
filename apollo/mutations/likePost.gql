@@ -1,5 +1,9 @@
 mutation likePost($id: Int!) {
 	likePost(id: $id) {
 		id
+		likedBy {
+			id
+			name
+		}
 	}
 }

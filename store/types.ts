@@ -1,14 +1,6 @@
-// store/type.ts
 export interface PostAuthor {
   id: number;
   name: string;
-}
-
-export interface Post {
-  id: number;
-  text: string;
-  author: PostAuthor;
-  createdAt: Date;
 }
 
 interface PaginationOptions {
@@ -17,16 +9,27 @@ interface PaginationOptions {
   perPage: number;
 }
 
-export interface PostState extends PaginationOptions {
-  postList: Post[];
-  editModePosts: number[];
-}
-
 export interface User {
   id: number;
   name: string;
 }
 
+export interface Like {
+  id: number;
+  likedBy: User;
+}
+export interface Post {
+  id: number;
+  text: string;
+  author: PostAuthor;
+  createdAt: Date;
+  likes: Like[];
+}
+
+export interface PostState extends PaginationOptions {
+  postList: Post[];
+  editModePosts: number[];
+}
 export interface UserWithFollowRecord extends User {
   isFollowing: boolean;
 }
@@ -44,7 +47,6 @@ export interface UserState {
   userList: UserWithFollowRecord[];
   totalUsers: number;
 }
-
 
 export interface FollowState {
   followedByCount: number;

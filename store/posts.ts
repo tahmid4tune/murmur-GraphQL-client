@@ -1,10 +1,13 @@
 import { ActionTree, GetterTree, MutationTree } from "vuex/types";
 import { namespace } from "vuex-class";
-import { Post, PostState, } from "./types";
+import { Post, PostState, User, } from "./types";
+
 const posts = require('~/apollo/queries/post.gql')
 const createPost = require('~/apollo/mutations/createPost.gql')
 const updatePost = require('~/apollo/mutations/updatePost.gql')
 const removePost = require('~/apollo/mutations/removePost.gql')
+const likePost = require('~/apollo/mutations/likePost')
+const dislikePost = require('~/apollo/mutations/dislikePost')
 
 export const state = (): PostState => ({
     postList: [],
@@ -90,6 +93,41 @@ export const actions: ActionTree<PostState, PostState> = {
         } catch (error) {
             console.error(error)
         }
+    },
+
+    async likePost({ commit }, payload) {
+        const apollo = this.app.apolloProvider.defaultClient;
+        try {
+            const postId = parseInt(payload)
+            const { data } = await apollo.mutate({
+                mutation: likePost,
+                variables: {
+                    id: postId,
+                },
+            })
+            commit("SET_LIKE_ON_POST", {
+                postId,
+                likeId: data.likePost.id,
+                likedBy: data.likePost.likedBy
+            })
+        } catch (error) {
+            console.error(error)
+        }
+    },
+
+    async unlikePost({ commit }, payload: { postId: number, unlikedBy: number }) {
+        const apollo = this.app.apolloProvider.defaultClient;
+        try {
+            await apollo.mutate({
+                mutation: dislikePost,
+                variables: {
+                    id: payload.postId,
+                },
+            })
+            commit("REMOVE_LIKE_FROM_POST", payload)
+        } catch (error) {
+            console.error(error)
+        }
     }
 }
 
@@ -115,6 +153,21 @@ export const mutations: MutationTree<PostState> = {
     SET_UPDATED_TEXT_ON_POST(state: PostState, data) {
         const updatedPost: Post = state.postList.filter((post) => post.id === data.id)[0];
         updatedPost.text = data.text;
+    },
+    SET_LIKE_ON_POST(state: PostState, data: { likeId: number, postId: number, likedBy: User }) {
+        const post: Post = state.postList.filter((post) => post.id === data.postId)[0];
+        post.likes.push({ id: data.likeId, likedBy: data.likedBy })
+    },
+    REMOVE_LIKE_FROM_POST(state: PostState, data: { postId: number, unlikedBy: number }) {
+        const post: Post = state.postList.filter((post) => post.id === data.postId)[0];
+        let likeIndex = -1;
+        post.likes.find((like, index) => {
+            if (like.likedBy.id === data.unlikedBy) {
+                likeIndex = index;
+                return like;
+            }
+        })
+        post.likes.splice(likeIndex, 1);
     }
 }
 

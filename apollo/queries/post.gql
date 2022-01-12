@@ -12,6 +12,7 @@ query posts($paginationInput: PaginationInput!) {
 			likes {
 				id
 				likedBy {
+					id
 					name
 				}
 			}
