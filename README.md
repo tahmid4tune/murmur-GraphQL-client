@@ -5,4 +5,4 @@ Run following set of commands from the root directory of the project folder:
 - yarn dev
 
 # backend application code URL
-https://github.com/tahmid4tune/insta-mini-server
+https://github.com/tahmid4tune/murmur-GraphQL-server
